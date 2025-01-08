@@ -112,14 +112,19 @@ Set the following environment variables for the application to function:
 ## 📊 Showcase
 
 ### Home Page  
-![Home Page](https://via.placeholder.com/800x400?text=Home+Page)
+![Screenshot 2025-01-08 212020](https://github.com/user-attachments/assets/b19fd2df-3ead-4b01-9005-33474212be70)
+
+
+![Screenshot 2025-01-08 211757](https://github.com/user-attachments/assets/306cf3cf-55f4-4f02-85d6-cf90f8960896)
 
 ### Chatbot Interface  
-![Chatbot Interface](https://via.placeholder.com/800x400?text=Chatbot+Interface)
+![Screenshot 2025-01-08 211907](https://github.com/user-attachments/assets/497a116b-5bb2-4288-8880-ef2db1852c8a)
 
-*(Replace placeholders with actual screenshots.)*
 
 ---
+
+
+
 
 ## 📜 License
 
