@@ -1,10 +1,6 @@
 # Social-Media-Performance-Analyzer
 
-Here's a README.md file for your project. It includes sections for a clear understanding of the codebase and allows you to showcase your website images effectively.
-
 ---
-
-# Social Media Performance Analyzer
 
 This project provides an analytics module for analyzing social media engagement using **Langflow** and **DataStax Astra DB**. It enables users to generate insights from engagement data such as likes, shares, and comments. The project includes a chatbot interface for interacting with the system.
 
@@ -105,11 +101,7 @@ The app is pre-configured for deployment on **Vercel**. Follow these steps:
 
 *(Replace placeholders with actual screenshots.)*
 
----
 
-## 🛠️ Contributing
-
-Feel free to fork the repository and submit pull requests. For major changes, please open an issue first to discuss what you would like to change.
 
 ---
 
