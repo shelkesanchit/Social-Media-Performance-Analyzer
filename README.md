@@ -1,8 +1,17 @@
 
 ---
 
-📊 **Social Media Performance Analyzer** 
-![Screenshot 2025-01-08 211907](https://github.com/user-attachments/assets/497a116b-5bb2-4288-8880-ef2db1852c8a)
+📊 **Social Media Performance Analyzer**
+
+
+
+
+![Screenshot 2025-01-08 212020](https://github.com/user-attachments/assets/e3dc9ff4-75d2-4553-9bc9-53b0524ef1bc)
+
+
+
+
+
 ✨ **Welcome to Hack Code's Pre-Hackathon Assignment: Social Media Performance Analysis!**  
 
 ### **Our Dynamic Team**  
@@ -117,10 +126,10 @@ Set the following environment variables for the application to function:
 ### 📊 **Showcase**  
 
 #### **Home Page**  
-![Screenshot 2025-01-08 211757](https://github.com/user-attachments/assets/a3e0ad33-1ebe-48f3-81ad-918819bae65d)
+![Screenshot 2025-01-08 211757](https://github.com/user-attachments/assets/4aa6ab66-195f-4f54-ad6e-706f382abb71)
 
 #### **Chatbot Interface**  
-![Screenshot 2025-01-08 211757](https://github.com/user-attachments/assets/306cf3cf-55f4-4f02-85d6-cf90f8960896)
+![Screenshot 2025-01-08 211907](https://github.com/user-attachments/assets/878a5dea-c7ab-4ebf-82dd-ea061430fd0e)
 
 ---
 
