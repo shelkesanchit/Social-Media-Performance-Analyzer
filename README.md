@@ -1,6 +1,4 @@
-Here’s a well-structured and visually appealing version of your project documentation:
 
----
 
 # 📊 Social Media Performance Analyzer
 
@@ -129,4 +127,4 @@ This project is licensed under the **MIT License**.
 
 ---
 
-This arrangement enhances readability and maintains a professional tone, making it easy to understand and follow.
+
