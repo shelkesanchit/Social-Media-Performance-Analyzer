@@ -31,25 +31,23 @@ This project provides an analytics module for analyzing social media engagement 
 ---
 
 
-📈 Task Breakdown
-1. Fetch Engagement Data
-Simulated dataset includes:
-❤️ Likes
-💪 Shares
-💬 Comments
-Post types: 🎢 Carousel, 🎥 Reels, 🖼️ Static Images
-Data stored in DataStax Astra DB.
-2. Analyze Post Performance
-Created a Langflow workflow to:
-💡 Accept post type input.
-🔎 Query the Astra DB dataset.
-📈 Calculate average engagement metrics.
-3. Provide Insights
-Integrated GPT with Langflow to deliver insights like:
-🎢 "Carousel posts have 20% higher engagement than static posts."
-🎥 "Reels generate 2x more comments compared to other formats."
-🔄 How It Works
 
+##  📈 Task Breakdown
+1. 🔍 Fetch Engagement Data
+Simulated dataset includes metrics like:
+    ❤️ Likes
+    💪 Shares
+    💬 Comments
+    Post types (e.g., 🎢 carousel, 🎥 reels, 🖼️ static images).
+    Data is stored in DataStax Astra DB.
+2. 🔄 Analyze Post Performance
+A Langflow workflow was created to:
+    💡 Accept input for post types.
+    🔎 Query the dataset in Astra DB.
+    📈 Calculate average engagement metrics for each post type.
+
+---
+## 🗂️ Directory Structure
 
 ```
 shelkesanchit-Social-Media-Performance-Analyzer/
@@ -137,17 +135,3 @@ This project is licensed under the MIT License.
 
 ---
 
-## 🎥 Submission Guidelines (For Hackathon)
-
-1. Record a video covering:
-   - Langflow workflow demonstration.
-   - DataStax Astra DB integration.
-   - GPT-powered insights generation.
-2. Upload the video to YouTube (ensure it's public or unlisted).
-3. Provide the GitHub repository link and the video link in your submission.
-
-Happy Hacking! 😊
-
----
-
-Let me know if you'd like any further customizations!
