@@ -135,12 +135,12 @@ Set the following environment variables for the application to function:
 
 ### 🎥 **YouTube Video**  
 Watch our project in action:  
-[![YouTube Video]([https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=VIDEO_ID](https://www.youtube.com/watch?v=blsuzlHQNz0&feature=youtu.be))  
+https://youtu.be/blsuzlHQNz0?feature=shared 
 
 ---
 
 ### 🌐 **Try it Now!**  
-Check out our live deployment: [**Try it**]([https://your-deployment-link.vercel.app](https://supermind-hack.vercel.app/))  
+Check out our live deployment: [**Try it**](https://supermind-hack.vercel.app/)  
 
 ---
 
