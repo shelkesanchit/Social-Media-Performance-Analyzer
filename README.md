@@ -1,4 +1,11 @@
-# Social-Media-Performance-Analyzer
+📊 Social Media Performance Analyzer
+
+✨ Welcome to Hack Code's Pre-Hackathon Assignment: Social Media Performance Analysis!
+Our dynamic team consists of:
+👨‍💻 Swadesh Jadhav
+👨‍💻 Saniya Bhosale
+👨‍💻 Divya Bhavsar
+👨‍💻 Sanchit Shelke
 
 ---
 
@@ -22,8 +29,25 @@ This project provides an analytics module for analyzing social media engagement 
 - **Deployment**: Vercel
 
 ---
+📈 Task Breakdown
+1. Fetch Engagement Data
+Simulated dataset includes:
+❤️ Likes
+💪 Shares
+💬 Comments
+Post types: 🎢 Carousel, 🎥 Reels, 🖼️ Static Images
+Data stored in DataStax Astra DB.
+2. Analyze Post Performance
+Created a Langflow workflow to:
+💡 Accept post type input.
+🔎 Query the Astra DB dataset.
+📈 Calculate average engagement metrics.
+3. Provide Insights
+Integrated GPT with Langflow to deliver insights like:
+🎢 "Carousel posts have 20% higher engagement than static posts."
+🎥 "Reels generate 2x more comments compared to other formats."
+🔄 How It Works
 
-## 🗂️ Directory Structure
 
 ```
 shelkesanchit-Social-Media-Performance-Analyzer/
