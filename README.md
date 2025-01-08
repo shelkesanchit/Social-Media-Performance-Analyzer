@@ -1,3 +1,8 @@
+### 🌐 **Try it Now!**  
+Check out our live deployment: [**Try it**](https://supermind-hack.vercel.app/)  
+
+---
+
 
 ---
 
@@ -139,8 +144,6 @@ https://youtu.be/blsuzlHQNz0?feature=shared
 
 ---
 
-### 🌐 **Try it Now!**  
-Check out our live deployment: [**Try it**](https://supermind-hack.vercel.app/)  
 
 ---
 
