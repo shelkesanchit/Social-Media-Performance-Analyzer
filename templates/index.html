@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOCIAL MEDIA ANALYST</title>
+    <link rel="icon" href="./logo.jpeg" type="image/jpeg">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #3b82f6;
+            --accent: #60a5fa;
+            --light: #f1f5f9;
+            --dark: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--dark);
+            min-height: 100vh;
+            color: var(--text-primary);
+            padding-bottom: 2rem;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .controls-container {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .date-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .date-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        input[type="date"] {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--accent);
+            background: var(--dark);
+            color: var(--text-primary);
+        }
+
+        .update-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+
+        .update-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: 400px;
+        }
+
+        .chart-card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .performance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .performance-item {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .performance-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+            margin: 0.5rem 0;
+        }
+
+        .data-table {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-top: 2rem;
+            width: 100%;
+        }
+
+        .data-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th, .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .data-table th {
+            background: rgba(59, 130, 246, 0.1);
+            font-weight: 600;
+        }
+
+        .show-data-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 2rem auto;
+            display: block;
+            min-width: 200px;
+        }
+
+        .trend-up { color: #10b981; }
+        .trend-down { color: #ef4444; }
+
+        /* Chat Icon Styles */
+        .chat-icon-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .chat-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .chat-icon:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .chat-icon svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+            transition: transform 0.3s ease;
+        }
+
+        .chat-icon:hover svg {
+            transform: scale(1.1);
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Social Media Analytics Dashboard</h1>
+        <p>Comprehensive insights for your social media performance</p>
+    </div>
+
+    <div class="container">
+        <div class="controls-container">
+            <div class="date-group">
+                <label>Start Date</label>
+                <input type="date" id="startDate">
+            </div>
+            <div class="date-group">
+                <label>End Date</label>
+                <input type="date" id="endDate">
+            </div>
+            <button class="update-btn" onclick="updateDashboard()">Update Analytics</button>
+        </div>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-title">Total Likes</div>
+                <div class="metric-value" id="totalLikes">0</div>
+                <div class="metric-trend" id="likesTrend"></div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Total Shares</div>
+                <div class="metric-value" id="totalShares">0</div>
+                <div class="metric-trend" id="sharesTrend"></div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Total Comments</div>
+                <div class="metric-value" id="totalComments">0</div>
+                <div class="metric-trend" id="commentsTrend"></div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Top Post Type</div>
+                <div class="metric-value" id="topPostType">-</div>
+                <div class="metric-trend" id="postTypeTrend"></div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-card full-width">
+                <canvas id="engagementChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <canvas id="postTypeChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <canvas id="postTimingChart"></canvas>
+            </div>
+        </div>
+
+        <div class="performance-grid">
+            <div class="performance-item">
+                <div class="performance-label">Avg. Engagement Rate</div>
+                <div class="performance-value" id="engagementRate">0%</div>
+            </div>
+            <div class="performance-item">
+                <div class="performance-label">Best Performing Day</div>
+                <div class="performance-value" id="bestDay">-</div>
+            </div>
+            <div class="performance-item">
+                <div class="performance-label">Highest Engagement</div>
+                <div class="performance-value" id="highestEngagement">0</div>
+            </div>
+            <div class="performance-item">
+                <div class="performance-label">Post Success Rate</div>
+                <div class="performance-value" id="successRate">0%</div>
+            </div>
+        </div>
+
+        <button class="show-data-btn" onclick="toggleDataTable()">Show Data</button>
+
+        <div class="data-table" style="display: none;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Post ID</th>
+                        <th>Type</th>
+                        <th>Likes</th>
+                        <th>Shares</th>
+                        <th>Comments</th>
+                        <th>Date Posted</th>
+                        <th>Time Posted</th>
+                        <th>Engagement Rate</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Chat Icon -->
+    <div class="chat-icon-container">
+        <div class="chat-icon" onclick="openChat()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+                <path d="M7 9h10M7 13h7" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </div>
+    </div>
+
+    <script>
+        // Initialize the dashboard data
+        const socialData = [
+        { post_id: 1, post_type: 'Carousel', likes: 52, shares: 38, comments: 45, date_posted: '15-04-2024', post_time: '9:30 AM' },
+{ post_id: 2, post_type: 'Carousel', likes: 93, shares: 54, comments: 5, date_posted: '08-02-2024', post_time: '11:45 AM' },
+{ post_id: 3, post_type: 'Static_Image', likes: 89, shares: 80, comments: 24, date_posted: '21-04-2024', post_time: '2:15 PM' },
+{ post_id: 4, post_type: 'Static_Image', likes: 75, shares: 65, comments: 42, date_posted: '06-07-2024', post_time: '7:00 PM' },
+{ post_id: 5, post_type: 'Reels', likes: 59, shares: 43, comments: 7, date_posted: '11-11-2024', post_time: '8:30 AM' },
+{ post_id: 6, post_type: 'Static_Image', likes: 74, shares: 80, comments: 73, date_posted: '16-11-2024', post_time: '3:45 PM' },
+{ post_id: 7, post_type: 'Carousel', likes: 84, shares: 55, comments: 43, date_posted: '31-03-2024', post_time: '10:00 AM' },
+{ post_id: 8, post_type: 'Static_Image', likes: 62, shares: 51, comments: 65, date_posted: '05-06-2024', post_time: '1:30 PM' },
+{ post_id: 9, post_type: 'Static_Image', likes: 46, shares: 82, comments: 40, date_posted: '15-08-2024', post_time: '5:15 PM' },
+{ post_id: 10, post_type: 'Carousel', likes: 44, shares: 56, comments: 56, date_posted: '07-01-2024', post_time: '12:00 PM' },
+{ post_id: 11, post_type: 'Carousel', likes: 41, shares: 17, comments: 61, date_posted: '24-08-2024', post_time: '4:30 PM' },
+{ post_id: 12, post_type: 'Reels', likes: 89, shares: 82, comments: 33, date_posted: '19-02-2024', post_time: '9:15 AM' },
+{ post_id: 13, post_type: 'Reels', likes: 93, shares: 79, comments: 75, date_posted: '16-05-2024', post_time: '6:45 PM' },
+{ post_id: 14, post_type: 'Reels', likes: 91, shares: 96, comments: 62, date_posted: '09-06-2024', post_time: '8:00 AM' },
+{ post_id: 15, post_type: 'Static_Image', likes: 59, shares: 60, comments: 87, date_posted: '17-09-2024', post_time: '2:30 PM' },
+{ post_id: 16, post_type: 'Static_Image', likes: 97, shares: 77, comments: 87, date_posted: '27-07-2024', post_time: '11:15 AM' },
+{ post_id: 17, post_type: 'Static_Image', likes: 44, shares: 30, comments: 30, date_posted: '05-07-2024', post_time: '4:00 PM' },
+{ post_id: 18, post_type: 'Static_Image', likes: 53, shares: 69, comments: 19, date_posted: '31-01-2024', post_time: '7:30 PM' },
+{ post_id: 19, post_type: 'Static_Image', likes: 81, shares: 69, comments: 68, date_posted: '06-10-2024', post_time: '10:45 AM' },
+{ post_id: 20, post_type: 'Static_Image', likes: 85, shares: 90, comments: 25, date_posted: '05-03-2024', post_time: '1:00 PM' },
+{ post_id: 21, post_type: 'Carousel', likes: 85, shares: 65, comments: 26, date_posted: '19-09-2024', post_time: '5:30 PM' },
+{ post_id: 22, post_type: 'Static_Image', likes: 77, shares: 30, comments: 37, date_posted: '08-08-2024', post_time: '8:15 AM' },
+{ post_id: 23, post_type: 'Carousel', likes: 46, shares: 38, comments: 59, date_posted: '23-03-2024', post_time: '12:30 PM' },
+{ post_id: 24, post_type: 'Reels', likes: 48, shares: 20, comments: 41, date_posted: '13-07-2024', post_time: '3:00 PM' },
+{ post_id: 25, post_type: 'Static_Image', likes: 45, shares: 72, comments: 39, date_posted: '04-01-2024', post_time: '6:15 PM' },
+{ post_id: 26, post_type: 'Static_Image', likes: 32, shares: 27, comments: 60, date_posted: '16-09-2024', post_time: '9:45 AM' },
+{ post_id: 27, post_type: 'Carousel', likes: 64, shares: 86, comments: 71, date_posted: '01-12-2024', post_time: '2:00 PM' },
+{ post_id: 28, post_type: 'Reels', likes: 93, shares: 64, comments: 78, date_posted: '19-05-2024', post_time: '7:15 PM' },
+{ post_id: 29, post_type: 'Reels', likes: 50, shares: 81, comments: 96, date_posted: '29-01-2024', post_time: '10:30 AM' },
+{ post_id: 30, post_type: 'Reels', likes: 82, shares: 62, comments: 20, date_posted: '06-03-2024', post_time: '1:45 PM' },
+{ post_id: 31, post_type: 'Reels', likes: 48, shares: 40, comments: 59, date_posted: '01-01-2024', post_time: '5:00 PM' },
+{ post_id: 32, post_type: 'Static_Image', likes: 86, shares: 63, comments: 78, date_posted: '23-06-2024', post_time: '8:45 AM' },
+{ post_id: 33, post_type: 'Static_Image', likes: 84, shares: 79, comments: 82, date_posted: '18-02-2024', post_time: '11:30 AM' },
+{ post_id: 34, post_type: 'Carousel', likes: 94, shares: 71, comments: 80, date_posted: '29-01-2024', post_time: '3:15 PM' },
+{ post_id: 35, post_type: 'Static_Image', likes: 76, shares: 69, comments: 31, date_posted: '21-06-2024', post_time: '6:30 PM' },
+{ post_id: 36, post_type: 'Static_Image', likes: 53, shares: 80, comments: 53, date_posted: '10-04-2024', post_time: '9:00 AM' },
+{ post_id: 37, post_type: 'Static_Image', likes: 97, shares: 43, comments: 77, date_posted: '19-03-2024', post_time: '12:45 PM' },
+{ post_id: 38, post_type: 'Reels', likes: 58, shares: 93, comments: 38, date_posted: '29-05-2024', post_time: '4:15 PM' },
+{ post_id: 39, post_type: 'Reels', likes: 39, shares: 79, comments: 85, date_posted: '08-01-2024', post_time: '7:45 PM' },
+{ post_id: 40, post_type: 'Static_Image', likes: 55, shares: 41, comments: 26, date_posted: '07-06-2024', post_time: '10:15 AM' },
+{ post_id: 41, post_type: 'Carousel', likes: 94, shares: 70, comments: 11, date_posted: '13-06-2024', post_time: '1:15 PM' },
+{ post_id: 42, post_type: 'Reels', likes: 88, shares: 67, comments: 53, date_posted: '31-03-2024', post_time: '5:45 PM' },
+{ post_id: 43, post_type: 'Reels', likes: 65, shares: 96, comments: 78, date_posted: '26-05-2024', post_time: '8:30 AM' },
+{ post_id: 44, post_type: 'Carousel', likes: 93, shares: 22, comments: 13, date_posted: '09-12-2024', post_time: '11:00 AM' },
+{ post_id: 45, post_type: 'Static_Image', likes: 29, shares: 20, comments: 99, date_posted: '20-07-2024', post_time: '2:45 PM' },
+{ post_id: 46, post_type: 'Carousel', likes: 96, shares: 88, comments: 48, date_posted: '13-08-2024', post_time: '6:00 PM' },
+{ post_id: 47, post_type: 'Static_Image', likes: 97, shares: 60, comments: 88, date_posted: '14-07-2024', post_time: '9:30 AM' },
+{ post_id: 48, post_type: 'Reels', likes: 42, shares: 85, comments: 89, date_posted: '09-05-2024', post_time: '12:15 PM' },
+{ post_id: 49, post_type: 'Reels', likes: 73, shares: 84, comments: 26, date_posted: '16-11-2024', post_time: '4:45 PM' },
+{ post_id: 50, post_type: 'Reels', likes: 42, shares: 44, comments: 19, date_posted: '19-11-2024', post_time: '7:30 PM' },
+{ post_id: 51, post_type: 'Static_Image', likes: 88, shares: 52, comments: 43, date_posted: '27-10-2024', post_time: '10:00 AM' },
+{ post_id: 52, post_type: 'Static_Image', likes: 71, shares: 60, comments: 46, date_posted: '17-03-2024', post_time: '1:30 PM' },
+{ post_id: 53, post_type: 'Reels', likes: 49, shares: 94, comments: 84, date_posted: '25-09-2024', post_time: '5:15 PM' },
+{ post_id: 54, post_type: 'Static_Image', likes: 48, shares: 99, comments: 44, date_posted: '14-06-2024', post_time: '8:45 AM' },
+{ post_id: 55, post_type: 'Static_Image', likes: 33, shares: 72, comments: 92, date_posted: '01-03-2024', post_time: '11:15 AM' },
+{ post_id: 56, post_type: 'Static_Image', likes: 96, shares: 78, comments: 91, date_posted: '23-12-2024', post_time: '3:30 PM' },
+{ post_id: 57, post_type: 'Static_Image', likes: 46, shares: 51, comments: 13, date_posted: '27-09-2024', post_time: '6:45 PM' },
+{ post_id: 58, post_type: 'Static_Image', likes: 48, shares: 96, comments: 72, date_posted: '23-02-2024', post_time: '9:15 AM' },
+{ post_id: 59, post_type: 'Reels', likes: 75, shares: 27, comments: 35, date_posted: '25-07-2024', post_time: '12:30 PM' },
+{ post_id: 60, post_type: 'Reels', likes: 97, shares: 56, comments: 27, date_posted: '10-03-2024', post_time: '4:00 PM' },
+        ];
+
+        let engagementChart, postTypeChart, postTimingChart;
+
+        // Format date from DD-MM-YYYY to YYYY-MM-DD
+        function formatDate(dateStr) {
+            const [day, month, year] = dateStr.split('-');
+            return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+        }
+
+        function formatDateForDisplay(dateStr) {
+            const date = new Date(formatDate(dateStr));
+            return date.toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+
+        function convertTo24Hour(timeStr) {
+            const [time, period] = timeStr.split(' ');
+            let [hours, minutes] = time.split(':');
+            hours = parseInt(hours);
+
+            if (period === 'PM' && hours !== 12) {
+                hours += 12;
+            } else if (period === 'AM' && hours === 12) {
+                hours = 0;
+            }
+
+            return hours;
+        }
+
+        function openChat() {
+            // Load chatbot in the current tab
+            window.location.href = '/chatbot';
+        }
+
+function updateDashboard() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+
+            let filteredData = socialData;
+            if (startDate && endDate) {
+                filteredData = socialData.filter(item => {
+                    const postDate = formatDate(item.date_posted);
+                    return postDate >= startDate && postDate <= endDate;
+                });
+            }
+
+            updateMetrics(filteredData);
+            updatePerformanceMetrics(filteredData);
+            updateCharts(filteredData);
+            updateTable(filteredData);
+        }
+
+function updateMetrics(data) {
+    // Calculate totals
+    const totals = data.reduce((acc, item) => ({
+        likes: acc.likes + item.likes,
+        shares: acc.shares + item.shares,
+        comments: acc.comments + item.comments
+    }), { likes: 0, shares: 0, comments: 0 });
+
+    // Update total metrics
+    document.getElementById('totalLikes').textContent = totals.likes.toLocaleString();
+    document.getElementById('totalShares').textContent = totals.shares.toLocaleString();
+    document.getElementById('totalComments').textContent = totals.comments.toLocaleString();
+
+    // Calculate and update top post type
+    const postTypeEngagement = data.reduce((acc, item) => {
+        const type = item.post_type.replace('_', ' ');
+        const engagement = item.likes + item.shares + item.comments;
+        acc[type] = (acc[type] || 0) + engagement;
+        return acc;
+    }, {});
+
+    const topType = Object.entries(postTypeEngagement)
+        .sort(([,a], [,b]) => b - a)[0][0];
+    document.getElementById('topPostType').textContent = topType;
+}
+
+function updatePerformanceMetrics(data) {
+    // Calculate average engagement rate
+    const totalEngagement = data.reduce((sum, item) => 
+        sum + item.likes + item.shares + item.comments, 0);
+    const totalPosts = data.length;
+    const avgEngagementRate = (totalEngagement / (totalPosts * 1000) * 100).toFixed(1);
+    document.getElementById('engagementRate').textContent = `${avgEngagementRate}%`;
+
+    // Calculate best performing day
+    const dailyEngagement = data.reduce((acc, item) => {
+        const date = formatDateForDisplay(item.date_posted);
+        const engagement = item.likes + item.shares + item.comments;
+        if (!acc[date] || acc[date].engagement < engagement) {
+            acc[date] = { engagement, date };
+        }
+        return acc;
+    }, {});
+
+    const bestDay = Object.values(dailyEngagement)
+        .sort((a, b) => b.engagement - a.engagement)[0];
+    document.getElementById('bestDay').textContent = bestDay ? 
+        bestDay.date.split(' ')[0] : '-';
+
+    // Calculate highest engagement
+    const highestEngagement = data.reduce((max, item) => {
+        const engagement = item.likes + item.shares + item.comments;
+        return Math.max(max, engagement);
+    }, 0);
+    document.getElementById('highestEngagement').textContent = 
+        highestEngagement.toLocaleString();
+
+    // Calculate post success rate
+    const successfulPosts = data.filter(item => {
+        const engagement = item.likes + item.shares + item.comments;
+        return engagement > (totalEngagement / totalPosts); // Above average
+    }).length;
+    const successRate = ((successfulPosts / totalPosts) * 100).toFixed(1);
+    document.getElementById('successRate').textContent = `${successRate}%`;
+}
+
+function updateCharts(data) {
+    updateEngagementChart(data);
+    updatePostTypeChart(data);
+    updatePostTimingChart(data);
+}
+
+function updateEngagementChart(data) {
+    const ctx = document.getElementById('engagementChart').getContext('2d');
+    
+    if (engagementChart) {
+        engagementChart.destroy();
+    }
+
+    // Sort data by date for proper timeline
+    const sortedData = [...data].sort((a, b) => 
+        new Date(formatDate(a.date_posted)) - new Date(formatDate(b.date_posted))
+    );
+
+    engagementChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: sortedData.map(item => formatDateForDisplay(item.date_posted)),
+            datasets: [{
+                label: 'Likes',
+                data: sortedData.map(item => item.likes),
+                borderColor: '#2563eb',
+                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                tension: 0.4,
+                fill: true
+            }, {
+                label: 'Shares',
+                data: sortedData.map(item => item.shares),
+                borderColor: '#60a5fa',
+                backgroundColor: 'rgba(96, 165, 250, 0.1)',
+                tension: 0.4,
+                fill: true
+            }, {
+                label: 'Comments',
+                data: sortedData.map(item => item.comments),
+                borderColor: '#93c5fd',
+                backgroundColor: 'rgba(147, 197, 253, 0.1)',
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Engagement Trends',
+                    color: '#f8fafc',
+                    font: { size: 16, weight: 'bold' }
+                },
+                legend: {
+                    labels: { color: '#f8fafc' }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                    ticks: { color: '#f8fafc' }
+                },
+                x: {
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                    ticks: { color: '#f8fafc' }
+                }
+            }
+        }
+    });
+}
+
+function updatePostTypeChart(data) {
+    const ctx = document.getElementById('postTypeChart').getContext('2d');
+    
+    if (postTypeChart) {
+        postTypeChart.destroy();
+    }
+
+    const postTypes = data.reduce((acc, item) => {
+        const type = item.post_type.replace('_', ' ');
+        acc[type] = (acc[type] || 0) + 1;
+        return acc;
+    }, {});
+
+    postTypeChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(postTypes),
+            datasets: [{
+                data: Object.values(postTypes),
+                backgroundColor: ['#2563eb', '#60a5fa', '#93c5fd', '#bfdbfe'],
+                borderColor: '#1e293b'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Post Type Distribution',
+                    color: '#f8fafc',
+                    font: { size: 16, weight: 'bold' }
+                },
+                legend: {
+                    labels: { color: '#f8fafc' }
+                }
+            }
+        }
+    });
+}
+
+function updatePostTimingChart(data) {
+    const ctx = document.getElementById('postTimingChart').getContext('2d');
+    
+    if (postTimingChart) {
+        postTimingChart.destroy();
+    }
+
+    const hourlyEngagement = Array(24).fill(0);
+    const hourlyPosts = Array(24).fill(0);
+
+    data.forEach(item => {
+        const hour = convertTo24Hour(item.post_time);
+        const engagement = item.likes + item.shares + item.comments;
+        hourlyEngagement[hour] += engagement;
+        hourlyPosts[hour]++;
+    });
+
+    const avgEngagement = hourlyEngagement.map((total, hour) => 
+        hourlyPosts[hour] ? total / hourlyPosts[hour] : 0
+    );
+
+    postTimingChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: Array.from({length: 24}, (_, i) => {
+                const hour = i % 12 || 12;
+                const period = i < 12 ? 'AM' : 'PM';
+                return `${hour}${period}`;
+            }),
+            datasets: [{
+                label: 'Average Engagement',
+                data: avgEngagement,
+                backgroundColor: '#60a5fa',
+                borderColor: '#2563eb'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Best Posting Times',
+                    color: '#f8fafc',
+                    font: { size: 16, weight: 'bold' }
+                },
+                legend: {
+                    labels: { color: '#f8fafc' }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                    ticks: { color: '#f8fafc' }
+                },
+                x: {
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                    ticks: { 
+                        color: '#f8fafc', 
+                        maxRotation: 45, 
+                        minRotation: 45 
+                    }
+                }
+            }
+        }
+    });
+}
+
+function updateTable(data) {
+    const tableBody = document.getElementById('tableBody');
+    tableBody.innerHTML = '';
+
+    data.forEach(item => {
+        const engagement = item.likes + item.shares + item.comments;
+        const engagementRate = ((engagement / (item.likes * 3)) * 100).toFixed(1);
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${item.post_id}</td>
+            <td>${item.post_type.replace('_', ' ')}</td>
+            <td>${item.likes.toLocaleString()}</td>
+            <td>${item.shares.toLocaleString()}</td>
+            <td>${item.comments.toLocaleString()}</td>
+            <td>${formatDateForDisplay(item.date_posted)}</td>
+            <td>${item.post_time}</td>
+            <td>${engagementRate}%</td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+function toggleDataTable() {
+    const dataTable = document.querySelector('.data-table');
+    const button = document.querySelector('.show-data-btn');
+    
+    if (dataTable.style.display === 'none') {
+        dataTable.style.display = 'block';
+        button.textContent = 'Hide Data';
+    } else {
+        dataTable.style.display = 'none';
+        button.textContent = 'Show Data';
+    }
+}
+
+// Initialize the dashboard
+document.addEventListener('DOMContentLoaded', () => {
+    const dates = socialData.map(item => formatDate(item.date_posted));
+    const minDate = dates.reduce((a, b) => a < b ? a : b);
+    const maxDate = dates.reduce((a, b) => a > b ? a : b);
+
+    document.getElementById('startDate').value = minDate;
+    document.getElementById('endDate').value = maxDate;
+
+    updateDashboard();
+});
+    </script>
+</body>
+</html>
